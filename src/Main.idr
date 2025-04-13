@@ -30,3 +30,11 @@ zipWith _ (_ :: _) [] impossible
 replicate : (n : Nat) -> a -> Vect n a
 replicate 0 _ = Nil
 replicate (S k) va = va :: replicate k va
+
+-- 演習1
+head : Vect (S n) a -> a
+head (x :: xs) = x
+
+-- 演習2
+tail : Vect (S n) a -> Vect n a
+tail (x :: xs) = xs
