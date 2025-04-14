@@ -79,3 +79,12 @@ maybeSize (Just _) = 1
 fromMaybe : (m : Maybe a) -> Vect (maybeSize m) a
 fromMaybe Nothing = Nil
 fromMaybe (Just x) = [x]
+
+-- 有限集合の要素を表す型
+data Fin : (n : Nat) -> Type where
+  FZ : {0 n : Nat} -> Fin (S n) -- 0を表す
+  FS : (k : Fin n) -> Fin (S n) -- k+1を表す(後続の数)
+
+index : Fin n -> Vect n a -> a
+index FZ (x :: _) = x
+index (FS k) (_ :: xs) = index k xs
