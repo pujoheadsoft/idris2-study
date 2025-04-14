@@ -43,3 +43,13 @@ tail (x :: xs) = xs
 zipWith3 : (a -> b -> c -> d) -> Vect n a -> Vect n b -> Vect n c -> Vect n d
 zipWith3 f [] [] [] = Nil
 zipWith3 f (x :: xs) (y :: ys) (z :: zs) = f x y z :: zipWith3 f xs ys zs
+
+-- 演習4
+foldSemi : Semigroup a => List a -> Maybe a
+foldSemi [] = Nothing
+foldSemi (x :: xs) = Just x <+> foldSemi xs
+
+-- 演習5
+foldSemiVect : Semigroup a => Vect (S n) a -> a
+foldSemiVect (x :: []) = x
+foldSemiVect (x :: t@(_ :: _)) = x <+> foldSemiVect t
