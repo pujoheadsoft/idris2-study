@@ -38,3 +38,8 @@ head (x :: xs) = x
 -- 演習2
 tail : Vect (S n) a -> Vect n a
 tail (x :: xs) = xs
+
+-- 演習3
+zipWith3 : (a -> b -> c -> d) -> Vect n a -> Vect n b -> Vect n c -> Vect n d
+zipWith3 f [] [] [] = Nil
+zipWith3 f (x :: xs) (y :: ys) (z :: zs) = f x y z :: zipWith3 f xs ys zs
