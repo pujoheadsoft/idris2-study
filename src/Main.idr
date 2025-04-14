@@ -53,3 +53,29 @@ foldSemi (x :: xs) = Just x <+> foldSemi xs
 foldSemiVect : Semigroup a => Vect (S n) a -> a
 foldSemiVect (x :: []) = x
 foldSemiVect (x :: t@(_ :: _)) = x <+> foldSemiVect t
+
+-- 演習6
+iterate : (n : Nat) -> a -> (a -> a) -> Vect n a
+iterate 0 _ _ = Nil
+iterate (S n) a f = a :: iterate n (f a) f
+
+-- 演習7
+generate : (n : Nat) -> (s -> (s, a)) -> s -> Vect n a
+generate 0 _ _ = Nil
+generate (S n) f s = do
+  let (s', a) = f s
+  a :: generate n f s'
+
+-- 演習8
+fromList : (as : List a) -> Vect (length as) a
+fromList [] = Nil
+fromList (x :: xs) = x :: fromList xs
+
+-- 演習9
+maybeSize : Maybe a -> Nat
+maybeSize Nothing = 0
+maybeSize (Just _) = 1
+
+fromMaybe : (m : Maybe a) -> Vect (maybeSize m) a
+fromMaybe Nothing = Nil
+fromMaybe (Just x) = [x]
