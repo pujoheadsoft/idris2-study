@@ -93,3 +93,8 @@ index (FS k) (_ :: xs) = index k xs
 update : (a -> a) -> Fin n -> Vect n a -> Vect n a
 update f FZ (x :: xs) = f x :: xs
 update f (FS k) (x :: xs) = x :: update f k xs
+
+-- 演習その2-2
+insert : Fin (S n) -> a -> Vect n a -> Vect (S n) a
+insert FZ a x = a :: x
+insert (FS k) a (x :: xs) = x :: insert k a xs
