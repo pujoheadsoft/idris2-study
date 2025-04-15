@@ -88,3 +88,8 @@ data Fin : (n : Nat) -> Type where
 index : Fin n -> Vect n a -> a
 index FZ (x :: _) = x
 index (FS k) (_ :: xs) = index k xs
+
+-- 演習その2-1
+update : (a -> a) -> Fin n -> Vect n a -> Vect n a
+update f FZ (x :: xs) = f x :: xs
+update f (FS k) (x :: xs) = x :: update f k xs
