@@ -98,3 +98,8 @@ update f (FS k) (x :: xs) = x :: update f k xs
 insert : Fin (S n) -> a -> Vect n a -> Vect (S n) a
 insert FZ a x = a :: x
 insert (FS k) a (x :: xs) = x :: insert k a xs
+
+-- 演習その2-3
+delete : Fin (S n) -> Vect (S n) a -> Vect n a
+delete FZ (_ :: xs) = xs
+delete (FS k) (x :: xs@(_ :: _)) = x :: delete k xs -- xs@(_ :: _)で少なくとも1要素あることを保証している
