@@ -1,4 +1,7 @@
 module Main
 
+import DependentTypeTest as DependentType
+
 main : IO ()
-main = putStrLn "Test successful!"
+main = do
+  DependentType.spec

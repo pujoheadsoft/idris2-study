@@ -25,6 +25,7 @@ main = Main
 executable = "idris2-study-test"
 -- opts =
 sourcedir = "src"
+
 -- builddir =
 -- outputdir =
 

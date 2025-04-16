@@ -13,10 +13,10 @@ authors = "Pujo"
 -- langversion
 
 -- packages to add to search path
--- depends =
+depends = elab-util
 
 -- modules to install
--- modules =
+modules = DependentType
 
 -- main file (i.e. file to load at REPL)
 main = Main
