@@ -12,8 +12,12 @@ Eq a => Eq (Vect n a) where
 
 public export
 Show a => Show (Vect n a) where
-  show Nil = "Nil"
-  show (x :: xs) = "(" ++ show x ++ " :: " ++ show xs ++ ")"
+  show xs = "[" ++ showItems xs ++ "]"
+    where
+      showItems : Vect m a -> String
+      showItems Nil = ""
+      showItems (x :: Nil) = show x
+      showItems (x :: xs) = show x ++ ", " ++ showItems xs
 
 -- 暗黙引数を明示しているが、(a -> b) -> Vect n a -> Vect n b でいい
 public export
@@ -32,6 +36,11 @@ public export
 replicate : (n : Nat) -> a -> Vect n a
 replicate 0 _ = Nil
 replicate (S k) va = va :: replicate k va
+
+public export
+-- 制約なし数量子の暗黙引数として n を渡す
+replicate' : {n : _} -> a -> Vect n a
+replicate' = replicate n
 
 -- 演習1
 public export
@@ -53,7 +62,12 @@ zipWith3 f (x :: xs) (y :: ys) (z :: zs) = f x y z :: zipWith3 f xs ys zs
 public export
 foldSemi : Semigroup a => List a -> Maybe a
 foldSemi [] = Nothing
-foldSemi (x :: xs) = Just x <+> foldSemi xs
+-- foldSemi (x :: xs) = do
+--   let result = foldSemi xs
+--   Just $ case result of
+--     Nothing => x
+--     Just y => (x <+> y)
+foldSemi (x :: xs) = pure . (maybe x (x <+>)) $ foldSemi xs
 
 -- 演習5
 public export
@@ -120,3 +134,53 @@ public export
 delete : Fin (S n) -> Vect (S n) a -> Vect n a
 delete FZ (_ :: xs) = xs
 delete (FS k) (x :: xs@(_ :: _)) = x :: delete k xs -- xs@(_ :: _)で少なくとも1要素あることを保証している
+
+-- 演習その2-4
+public export
+safeIndexList : (xs : List a) -> Fin (length xs) -> a
+safeIndexList [] _ impossible
+safeIndexList (x :: _) FZ = x
+safeIndexList (_ :: xs) (FS k) = safeIndexList xs k
+
+-- 演習その2-5
+public export
+finToNat : Fin n -> Nat
+finToNat FZ = 0
+finToNat (FS k) = 1 + finToNat k
+
+-- 演習その2-5-2
+public export
+take : (k : Fin (S n)) -> Vect n a -> Vect (finToNat k) a
+take FZ _ = []
+take (FS k) (x :: xs) = x :: take k xs
+
+-- 演習その2-5-3
+public export
+minus : (n : Nat) -> Fin (S n) -> Nat
+minus n FZ = n
+minus (S n) (FS k) = minus n k
+
+public export
+(++) : Vect m a -> Vect n a -> Vect (m + n) a
+[] ++ ys = ys
+(x :: xs) ++ ys = x :: (xs ++ ys)
+
+public export
+drop' : (m : Nat) -> Vect (m + n) a -> Vect n a
+drop' 0 xs = xs
+drop' (S n) (_ :: xs) = drop' n xs
+
+public export
+flattenList : List (List a) -> List a
+flattenList [] = []
+flattenList (xs :: xss) = xs ++ flattenList xss
+
+-- 演習3-1
+public export
+flattenVect : Vect n (Vect m a) -> Vect (n * m) a
+flattenVect [] = []
+flattenVect (xs :: xss) = (++) xs (flattenVect xss)
+
+-- 演習3-2
+-- public export
+-- take' : (m : Nat) -> Vect (m + 1) a -> a
