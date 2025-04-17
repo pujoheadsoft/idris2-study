@@ -182,5 +182,7 @@ flattenVect [] = []
 flattenVect (xs :: xss) = (++) xs (flattenVect xss)
 
 -- 演習3-2
--- public export
--- take' : (m : Nat) -> Vect (m + 1) a -> a
+public export
+take' : (m : Nat) -> Vect (m + n) a -> Vect m a
+take' 0 xs = []
+take' (S n) (x :: xs) = x :: take' n xs

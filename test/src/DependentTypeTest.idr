@@ -151,7 +151,12 @@ spec = do
     let vec = ["a", "b", "c", "d", "e"]
     let result = take fin4_6 vec
     assertEq result ["a", "b", "c", "d"]
-  
+
+  it "test take'" $ do
+    let vec = ["a", "b", "c", "d", "e"]
+    let result = take' 4 vec
+    assertEq result ["a", "b", "c", "d"]
+
   it "test minus" $ do
     let result = minus 5 fin4_6
     assertEq result 1
