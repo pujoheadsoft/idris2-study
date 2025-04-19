@@ -154,11 +154,22 @@ take : (k : Fin (S n)) -> Vect n a -> Vect (finToNat k) a
 take FZ _ = []
 take (FS k) (x :: xs) = x :: take k xs
 
--- 演習その2-5-3
+-- 演習その2-6
 public export
 minus : (n : Nat) -> Fin (S n) -> Nat
 minus n FZ = n
 minus (S n) (FS k) = minus n k
+
+-- 演習その2-7
+public export
+drop : (m : Fin (S n)) -> Vect n a -> Vect (minus n m) a
+drop FZ xs = xs
+drop (FS m) (_ :: xs) = drop m xs
+
+-- 演習その2-8
+public export
+splitAt : (m : Fin (S n)) -> Vect n a -> (Vect (finToNat m) a, Vect (minus n m) a)
+splitAt m xs = (take m xs, drop m xs)
 
 public export
 (++) : Vect m a -> Vect n a -> Vect (m + n) a
@@ -186,3 +197,8 @@ public export
 take' : (m : Nat) -> Vect (m + n) a -> Vect m a
 take' 0 xs = []
 take' (S n) (x :: xs) = x :: take' n xs
+
+-- 演習3-2-2
+public export
+splitAt' : (m : Nat) -> Vect (m + n) a -> (Vect m a, Vect n a)
+splitAt' m xs = (take' m xs, drop' m xs)

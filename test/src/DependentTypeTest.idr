@@ -25,6 +25,12 @@ fin0_7 = FZ
 fin1_3 : Fin 3
 fin1_3 = FS FZ
 
+fin2_5 : Fin 5
+fin2_5 = FS (FS FZ)
+
+fin2_6 : Fin 6
+fin2_6 = FS (FS FZ)
+
 fin4_5 : Fin 5
 fin4_5 = FS (FS (FS (FS FZ)))
 
@@ -161,6 +167,26 @@ spec = do
     let result = minus 5 fin4_6
     assertEq result 1
   
+  it "test drop" $ do
+    let vec = [1, 2, 3, 4]
+    let result = drop fin2_5 vec
+    assertEq result [3, 4]
+
+  it "test drop'" $ do
+    let vec = [1, 2, 3, 4]
+    let result = drop' 2 vec
+    assertEq result [3, 4]
+
+  it "test splitAt" $ do
+    let vec = [1, 2, 3, 4, 5]
+    let result = splitAt fin2_6 vec
+    assertEq result ([1, 2], [3, 4, 5])
+
+  it "test splitAt'" $ do
+    let vec = [1, 2, 3, 4, 5]
+    let result = splitAt' 2 vec
+    assertEq result ([1, 2], [3, 4, 5])
+
   it "test Vect ++" $ do
     let vec1 = [1, 2, 3]
     let vec2 = [4, 5, 6]
