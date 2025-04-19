@@ -1,11 +1,7 @@
 module DependentTypeTest
 
 import DependentType
-
-assertEq : (Show a, Eq a) => (given : a) -> (expected : a) -> IO ()
-assertEq g e = if g == e 
-  then putStrLn "✅ Test Passed"
-  else putStrLn ("❌ Test Failed\n  expected: " ++ show e ++ "\n    actual: " ++ show g)
+import Test
 
 vec0 : Vect 0 Integer
 vec0 = Nil
@@ -36,11 +32,6 @@ fin4_5 = FS (FS (FS (FS FZ)))
 
 fin4_6 : Fin 6
 fin4_6 = FS (FS (FS (FS FZ)))
-
-it : String -> IO() -> IO ()
-it description test = do
-  putStr $ description ++ ": "
-  test
 
 export
 spec : IO ()
