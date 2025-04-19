@@ -16,7 +16,7 @@ authors = "Pujo"
 depends = elab-util
 
 -- modules to install
-modules = DependentType
+modules = DependentType, DependentPairType
 
 -- main file (i.e. file to load at REPL)
 main = Main

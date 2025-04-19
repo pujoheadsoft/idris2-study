@@ -75,6 +75,7 @@ AnyMatrix a = (m ** n ** Vect m (Vect n a))
     fst : a
     snd : p fst
 -}
+public export
 takeWhileExists : (a -> Bool) -> Vect m a -> Exists (\n => Vect n a)
 takeWhileExists f [] = Evidence _ []
 takeWhileExists f (x :: xs) = case f x of
@@ -92,6 +93,7 @@ takeWhileExists f (x :: xs) = case f x of
   すぐ下にlength'としてData.Vector.lengthの実装を載せているが、これは更に下に定義した
   bogusLengthのようにインチキな実装をしてしまうことができる。
 -}
+public export
 vectLength : Vect n a -> Singleton n
 vectLength [] = Val 0
 vectLength (x :: xs) =
