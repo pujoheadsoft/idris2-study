@@ -202,3 +202,8 @@ spec = do
     let vec = [[1, 2], [3, 4], [5, 6]]
     let result = flattenVect vec
     assertEq result [1, 2, 3, 4, 5, 6]
+  
+  it "test transpose" $ do
+    let vec = [[1, 2, 3], [4, 5, 6]]
+    let result = transpose vec
+    assertEq result [[1, 4], [2, 5], [3, 6]]

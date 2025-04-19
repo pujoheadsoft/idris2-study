@@ -202,3 +202,9 @@ take' (S n) (x :: xs) = x :: take' n xs
 public export
 splitAt' : (m : Nat) -> Vect (m + n) a -> (Vect m a, Vect n a)
 splitAt' m xs = (take' m xs, drop' m xs)
+
+-- 演習3-3
+public export
+transpose : {k : _} -> Vect m (Vect k a) -> Vect k (Vect m a)
+transpose [] = replicate k []
+transpose (xs :: xss) = zipWith (::) xs (transpose xss)
