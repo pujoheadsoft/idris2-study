@@ -127,3 +127,26 @@ toDPair : Exists (\n => Vect n a) -> (m ** Vect m a)
 toDPair (Evidence _ as) =
   let Val m = vectLength as
   in (m ** as)
+
+public export
+filterVect : (a -> Bool) -> Vect n a -> (m ** Vect m a)
+filterVect f [] = (_ ** [])
+filterVect f (x :: xs) = case f x of
+  False => filterVect f xs
+  True => let (m ** ys) = filterVect f xs
+          in (S m ** x :: ys)
+
+public export
+mapMaybeVect : (a -> Maybe b) -> Vect n a -> (m ** Vect m b)
+mapMaybeVect f [] = (_ ** [])
+mapMaybeVect f (a :: xs) = case f a of
+  Nothing => mapMaybeVect f xs
+  Just b => let (m ** ys) = mapMaybeVect f xs
+             in (S m ** b :: ys)
+
+public export
+dropWhileVect : (a -> Bool) -> Vect n a -> Exists (\m => Vect m a)
+dropWhileVect f [] = Evidence _ []
+dropWhileVect f (x :: xs) = case f x of
+  True => dropWhileVect f xs
+  False => Evidence _ (x :: xs)
