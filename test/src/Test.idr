@@ -11,3 +11,7 @@ it : String -> IO() -> IO ()
 it description test = do
   putStr $ description ++ ": "
   test
+
+public export
+failure : String -> IO ()
+failure message = putStrLn ("❌ Test Failed: " ++ message)

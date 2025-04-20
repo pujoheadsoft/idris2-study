@@ -7,6 +7,8 @@ import Data.Vect
 import Data.DPair
 import Data.Singleton
 
+%default total
+
 {-
   依存対の例
   ベクタとベクタの長さに合致する値が対になったもの
@@ -45,11 +47,12 @@ AnyVect'' a = (n : Nat ** Vect n a)
 AnyVect''' : (a : Type) -> Type
 AnyVect''' a = (n ** Vect n a)
 
-takeWhile : (a -> Bool) -> Vect m a -> (n ** Vect n a)
-takeWhile f [] = (_ ** []) -- 依存対を作るにも**の構文は使える
-takeWhile f (x :: xs) = case f x of
+public export
+takeWhile' : (a -> Bool) -> Vect m a -> (n ** Vect n a)
+takeWhile' f [] = (_ ** []) -- 依存対を作るにも**の構文は使える
+takeWhile' f (x :: xs) = case f x of
   True => do
-    let (_ ** ys) = takeWhile f xs -- **はパターンマッチにも使える
+    let (_ ** ys) = takeWhile' f xs -- **はパターンマッチにも使える
     (_ ** x :: ys)
   False => (_ ** [])
 
@@ -84,7 +87,7 @@ takeWhileExists f (x :: xs) = case f x of
   False => takeWhileExists f xs
 
 {-
-  単独型(Singleton)の例
+  単独型(Singleton)の例(Singletonの説明は↓に書いた)
   Singletonは保有する値を引数にとる型
   固定値以外の値を返すことは型エラーとなる
 
@@ -100,6 +103,17 @@ vectLength (x :: xs) =
   let Val l = vectLength xs
   in Val (S l)
 
+{-
+Singletonの定義はこうなっている
+
+data Singleton : a -> Type where
+  Val : (x : a) -> Singleton x
+
+Singleton : a -> Type は、「型 a を取って、その型に依存する型 Singleton a を生成する」という意味。
+この Singleton は 型のパラメータ a ではなく、値 x : a を型に持つ。
+これは Idris の「型に値を埋め込める依存型」という性質を使ったもの。
+-}
+
 length' : (xs : Vect len elem) -> Nat
 length' [] = 0
 length' (_::xs) = 1 + length' xs
@@ -108,3 +122,8 @@ length' (_::xs) = 1 + length' xs
 bogusLength : (xs : Vect len elem) -> Nat
 bogusLength = const 0
 
+public export
+toDPair : Exists (\n => Vect n a) -> (m ** Vect m a)
+toDPair (Evidence _ as) =
+  let Val m = vectLength as
+  in (m ** as)

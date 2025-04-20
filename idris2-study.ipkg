@@ -11,12 +11,14 @@ authors = "Pujo"
 
 -- the Idris2 version required (e.g. langversion >= 0.5.1)
 -- langversion
+langversion >= 0.5.1
 
 -- packages to add to search path
-depends = elab-util
+depends = base >= 0.5.1
 
 -- modules to install
-modules = DependentType, DependentPairType
+modules = DependentType
+        , DependentPairType
 
 -- main file (i.e. file to load at REPL)
 main = Main
