@@ -69,3 +69,12 @@ spec = do
     case r of
       (1 ** r) => r `shouldBe` [3]
       (l ** _) => failure ("expected Vect length 1, but " ++ show l)
+
+  it "test dropWhileVect'" $ do
+    let
+      vec : Vect 3 Integer
+      vec = [1, 2, 3]
+    let r = dropWhileVect' (\x => x < 3) vec
+    case r of
+      (1 ** r) => r `shouldBe` [3]
+      (l ** _) => failure ("expected Vect length 1, but " ++ show l)

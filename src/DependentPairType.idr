@@ -150,3 +150,10 @@ dropWhileVect f [] = Evidence _ []
 dropWhileVect f (x :: xs) = case f x of
   True => dropWhileVect f xs
   False => Evidence _ (x :: xs)
+
+public export
+dropWhileVect' : (a -> Bool) -> Vect m a -> (n ** Vect n a)
+dropWhileVect' f xs = do
+  let Evidence _ ys = dropWhileVect f xs
+      Val n = vectLength ys
+  (n ** ys)
