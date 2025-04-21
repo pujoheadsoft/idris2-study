@@ -6,6 +6,7 @@ module DependentPairType
 import Data.Vect
 import Data.DPair
 import Data.Singleton
+import Data.HList
 
 %default total
 
