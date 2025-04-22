@@ -15,22 +15,28 @@ Pure = pure
 
 -- Functor則
 interface Functor f => FunctorLaw f where
+  -- map id = id
   identity : {a : Type} -> (x : f a) -> map Id x = x
 
+  -- map (f . g)  ==  map f . map g
   composition : {a, b, c : Type} -> (x : f a) -> (g : a -> b) -> (h : b -> c)
               -> map (h . g) x = ((map h) . (map g)) x
 
 -- Applicative則
 interface Applicative f => ApplicativeLaw f where
+  -- pure id <*> v = v
   aIdentity : {a : Type} -> (x : f a)
            -> pure Id <*> x = x
 
+  -- pure (.) <*> u <*> v <*> w = u <*> (v <*> w)
   aComposition : {a, b, c : Type} -> (u : f (b -> c)) -> (v : f (a -> b)) -> (w : f a)
               -> pure (.) <*> u <*> v <*> w = u <*> (v <*> w)
   
+  -- pure f <*> pure x = pure (f x)
   homomorphism : {a, b : Type} -> (g : a -> b) -> (x : a)
                -> pure g <*> pure x = pure {f} (g x)
   
+  -- u <*> pure y = pure ($ y) <*> u
   interchangeProperty : {a, b : Type} -> (u : f (a -> b)) -> (y : a)
                      -> u <*> pure y = pure ($ y) <*> u
 
