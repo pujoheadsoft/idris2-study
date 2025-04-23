@@ -22,6 +22,7 @@ modules = DependentType
         , Data.HList
         , Eq
         , Law
+        , Predicates
 
 -- main file (i.e. file to load at REPL)
 main = Main

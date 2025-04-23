@@ -1,6 +1,12 @@
 module DependentType
 
 public export
+{-
+  依存型 Vect の定義(Preludeにも入ってる)
+  (len : Nat) や (a : Type) は次のように省略できる
+  data Vect : Nat -> Type -> Type where
+  名付けたものを、別の引数で使っている場合は省略できない
+ -}
 data Vect : (len : Nat) -> (a :Type) -> Type where
   Nil : Vect 0 a
   (::) : (x : a) -> (xs : Vect n a) -> Vect (S n) a
