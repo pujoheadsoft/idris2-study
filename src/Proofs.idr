@@ -3,7 +3,10 @@ module Proofs
 {-
   [等価性]
   data Equal : forall a, b . a -> b -> Type where
-    反射性
+    反射性(Reflexivity)
+    xRx 値が等しいペアのとき、必ず関係が成立する(自分自身に対して必ず関係性を持つ)。
+    反射性を満たす例の一つが = である。
+    ↓のxは暗黙引数なので、推測できれば省略できる。
     Refl : {0 x : a} -> Equal x x
 
   [Equalの演算子]
@@ -36,6 +39,11 @@ module Proofs
   推移律: a = b, b = c ならば a = c であることの証明
   trans : forall a, b, c . (0 l : a = b) -> (0 r : b = c) -> a = c
   trans Refl Refl = Refl
+
+  [cong]
+  合同関係: a = b ならば f a = f b であることの証明
+  cong : (0 f : t -> u) -> (0 p : a = b) -> f a = f b
+  cong f Refl = Refl
 -}
 
 {- 対称性を自前で実装してみる -}
