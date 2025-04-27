@@ -139,9 +139,24 @@ zip (MkTable s1 m rs1) (MkTable s2 n rs2) =
 onePlusOne : the Nat 1 + 1 = 2
 onePlusOne = Refl
 
+{- 
+  以下はリストにおけるmapがリスト中の要素数を変えないという命題
+
+  [congの定義]
+  congはconguenceの略で、合同性(同値関係)を表す。
+  この定義の `f`はt -> u という関数、pはaとbが等しいことの証明で、
+  これらをもとに a と b が等しいなら、f a と f b も等しいと言っている。
+  cong : (0 f : t -> u) -> (0 p : a = b) -> f a = f b
+  cong f Refl = Refl
+-}
 mapListLength : (f : a -> b) -> (as : List a) -> length as === length (map f as)
-mapListLength f [] = Refl
-mapListLength f (x :: xs) = cong S $ mapListLength f xs
+mapListLength f [] = Refl -- 空なら長さは同じになる
+-- mapListLength f (x :: xs) = cong S $ mapListLength f xs
+mapListLength f (x :: xs) = case mapListLength f xs of
+  -- prf : length xs = length (mapImpl f xs)
+  -- cong S prf は length xs = length (mapImpl f xs) なら S (length xs) = S (length (mapImpl f xs)) という証明
+  -- prf => ?hole と虫食いにしてみると、cong S にすればいいことがわかる
+  prf => cong S prf
 
 -- 演習2-1
 mapIdEither : (ea : Either e a) -> map Prelude.id ea === ea
@@ -150,4 +165,6 @@ mapIdEither (Right v) = Refl
 
 mapIdList : (as : List a) -> map Prelude.id as === as
 mapIdList [] = Refl
-mapIdList (x :: xs) = cong (x ::) $ mapIdList xs
+-- mapIdList (x :: xs) = cong (x ::) $ mapIdList xs
+mapIdList (x :: xs) = case mapIdList xs of
+  prf => cong (x ::) prf

@@ -1,4 +1,4 @@
-module Law
+module Law.Law
 
 %default total
 
@@ -7,13 +7,16 @@ module Law
   回避するためには、Prelude.id と書くか、以下のように定義した大文字の識別子を使う。
   https://github.com/gemmaro/idris2-tutorial/blob/ja/translation/ja/src/Tutorial/Eq.md
 -}
+public export
 Id : a -> a
 Id = id
 
+public export
 Pure : Applicative f => a -> f a
 Pure = pure
 
 -- Functor則
+public export
 interface Functor f => FunctorLaw f where
   -- map id = id
   identity : {a : Type} -> (x : f a) -> map Id x = x
@@ -23,6 +26,7 @@ interface Functor f => FunctorLaw f where
               -> map (h . g) x = ((map h) . (map g)) x
 
 -- Applicative則
+public export
 interface Applicative f => ApplicativeLaw f where
   -- pure id <*> v = v
   aIdentity : {a : Type} -> (x : f a)
@@ -41,6 +45,7 @@ interface Applicative f => ApplicativeLaw f where
                      -> u <*> pure y = pure ($ y) <*> u
 
 -- Monad則
+public export
 interface Monad m => MonadLaw m where
   leftIdentity : {a : Type} -> (x : a) -> (f : a -> m b)
                -> pure x >>= f = f x
@@ -73,7 +78,9 @@ ApplicativeLaw Maybe where
   interchangeProperty Nothing _ = Refl
 
 MonadLaw Maybe where
-  leftIdentity _ _ = Refl
+  -- pure x >>= f = f x
+  -- leftIdentity _ _ = Refl
+  leftIdentity x f = Refl {x = f x} -- こう書ける
 
   rightIdentity (Just _) = Refl
   rightIdentity Nothing = Refl

@@ -15,14 +15,18 @@ langversion >= 0.5.1
 
 -- packages to add to search path
 depends = base >= 0.5.1
+        , elab-util
+        , refined
 
 -- modules to install
 modules = DependentType
         , DependentPairType
         , Data.HList
         , Eq
-        , Law
         , Predicates
+        , Law.Law
+        , Law.Reader
+        , Law.BrokenMaybe
 
 -- main file (i.e. file to load at REPL)
 main = Main
