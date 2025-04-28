@@ -38,9 +38,10 @@ ApplicativeLaw (Reader r) where
   homomorphism f x = Refl
   interchangeProperty (MkReader u) y = Refl
 
-
 {-
   左単位則を証明する
+  (めっちゃ面倒くさい。Lean4の方が楽)
+
   左単位則は、pure x >>= f = f x というもの。
   pure や >>= を Reader の文脈で考えると
   pure x は MkReader (\r => x)となる。
@@ -104,14 +105,8 @@ lemmaReaderEtaReduction (MkReader reader) = Refl { x = MkReader reader}
 proof_leftIdentity : (v : a) -> (f : a -> Reader r b) -> MkReader (\r => runReader (f v) r) = f v
 proof_leftIdentity v f = trans (lemma v f) (lemmaReaderEtaReduction (f v))
 
-proofAssociativity : (x : Reader r a)
-    -> (f : (a -> Reader r b))
-    -> (g : (b -> Reader r c))
-    -> (x >>= f) >>= g = x >>= (\x' => f x' >>= g)
-proofAssociativity x f g = ?holeAssociativity
-
 MonadLaw (Reader r) where
   leftIdentity x f = proof_leftIdentity x f
   rightIdentity (MkReader r2a) = Refl
   -- (x >>= f) >>= g = x >>= (\x' => f x' >>= g)
-  associativity x f g = ?y
+  associativity x f g = Refl
