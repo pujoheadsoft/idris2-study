@@ -68,3 +68,30 @@ trans1 p1 p2 = trans p1 p2
 -- replaceを使った版
 trans2 : (a = b) -> (b = c) -> (a = c)
 trans2 p1 p2 = rewrite p1 in p2
+
+-- 自動で証明できる
+p1_plus_1 : 1 + 1 = 2
+p1_plus_1 = Refl { x = 1 + 1 }
+
+-- 変数が絡むと自動で証明できなくなる
+n_plus_1 : (n : Nat) -> n + 1 = 1 + n
+n_plus_1 Z = Refl { x = 1 + Z }
+n_plus_1 (S n) = rewrite (n_plus_1 n) in Refl { x = 1 + S n } -- 再帰的に証明
+
+{-
+  これも自動で証明できない
+  では、なぜReflはある等式は証明できるが、他の等式は証明できないのだろうか？
+
+  第一の答えは、この例のplusは第一引数の再帰によって定義されるからである。
+  Reflだけで証明できる等式は「定義的等式」と呼ばれる。
+  定義的に等しいためには、方程式の両辺が同じ値に正規化されなければならない。
+
+  つまり、Idrisで1+1と入力すると、定義的等式が組み込まれているので、即座に2になる。
+-}
+plusReducesR : (n : Nat) -> plus n Z = n
+plusReducesR Z = Refl
+plusReducesR (S n) = rewrite (plusReducesR n) in Refl { x = Z + S n }
+
+-- 一方、これは定数がplusの第一引数に来ているので、定義的等式が成り立つ。だからReflで証明できる。
+plusReducesL : (n : Nat) -> plus Z n = n
+plusReducesL n = Refl
